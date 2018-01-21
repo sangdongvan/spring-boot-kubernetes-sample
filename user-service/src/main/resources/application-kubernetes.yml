@@ -1,0 +1,15 @@
+server:
+  port: 8181
+  contextPath: /uaa
+security:
+  user:
+    password: password
+  enable-csrf: false
+spring:
+  profiles: kubernetes
+  datasource:
+    url: jdbc:mysql://mysql.my-store:3306/dev
+    username: root
+    password: dbpass
+    initialize: true
+security.ignored: /resources/**

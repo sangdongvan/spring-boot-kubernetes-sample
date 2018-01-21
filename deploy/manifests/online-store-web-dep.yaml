@@ -1,0 +1,49 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: online-store-web
+  namespace: my-store
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: online-store-web
+    spec:
+      containers:
+      - name: online-store-web
+        image: sangdongvan/online-store-web:0.0.1-SNAPSHOT
+        resources:
+          limits:
+            cpu: 300m
+            memory: 1000Mi
+          requests:
+            cpu: 100m
+            memory: 300Mi
+        ports:
+        - containerPort: 8787
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: kubernetes
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+          readOnlyRootFilesystem: true
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8787
+          initialDelaySeconds: 300
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8787
+          initialDelaySeconds: 30
+          periodSeconds: 3
+      nodeSelector:
+        beta.kubernetes.io/os: linux

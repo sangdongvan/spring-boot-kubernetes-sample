@@ -1,0 +1,54 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: elasticsearch
+  labels:
+    name: elasticsearch
+  namespace: kube-system
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: elasticsearch
+    spec:
+      # Virtual Memory
+      #  - https://goo.gl/1vhNrj
+      #  - https://goo.gl/vbFqJy
+      initContainers:
+      - image: busybox:1.27.2
+        name: init-sysctl
+        command:
+        - sysctl
+        - -w
+        - vm.max_map_count=262144
+        securityContext:
+          privileged: true
+      containers:
+      - image: docker.elastic.co/elasticsearch/elasticsearch:6.1.2
+        name: elasticsearch
+        ports:
+          - name: elasticsearch
+            containerPort: 9200
+        env:
+          - name: ELASTIC_PASSWORD
+            value: leToliAT
+          - name: ES_JAVA_OPTS
+            value: "-Xms512m -Xmx512m"
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  labels:
+    name: elasticsearch
+  namespace: kube-system
+spec:
+  ports:
+  - port: 9200
+    targetPort: 9200
+  selector:
+    name: elasticsearch

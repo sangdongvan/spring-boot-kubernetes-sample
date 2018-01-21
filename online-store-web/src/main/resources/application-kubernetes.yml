@@ -1,0 +1,24 @@
+---
+spring:
+  profiles: kubernetes
+  application:
+    name: online-store-web
+zuul:
+  ignored-services: '*'
+  routes:
+    edge-service:
+      path: /api/**
+      url: http://edge-service.my-store:9999
+    auth-service:
+      path: /user/**
+      url: http://user-service.my-store:8181/uaa/user
+security:
+  enable-csrf: false
+  oauth2:
+    resource:
+      userInfoUri: http://user-service.my-store:8181/uaa/user
+    client:
+      accessTokenUri: http://user-service.my-store:8181/uaa/oauth/token
+      userAuthorizationUri: http://user-service.my-store:8181/uaa/oauth/authorize
+      clientId: acme
+      clientSecret: acmesecret

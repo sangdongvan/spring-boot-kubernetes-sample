@@ -1,0 +1,25 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: config-service
+  labels:
+    name: config-service
+  namespace: my-store
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: config-service
+    spec:
+      containers:
+      - name: config-service
+        image: sangdongvan/config-service:0.0.1-SNAPSHOT
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: kubernetes
+        ports:
+        - containerPort: 8888
+      nodeSelector:
+        beta.kubernetes.io/os: linux

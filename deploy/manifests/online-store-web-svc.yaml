@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: online-store-web
+  labels:
+    name: online-store-web
+  namespace: my-store
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8787
+    nodePort: 30001
+  selector:
+    name: front-end

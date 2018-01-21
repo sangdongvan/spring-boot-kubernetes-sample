@@ -1,0 +1,5 @@
+spring:
+  profiles: kubernetes
+  cloud:
+    config:
+      uri: http://config-service.my-store:8888

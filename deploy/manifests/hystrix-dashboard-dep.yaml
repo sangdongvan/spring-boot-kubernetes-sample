@@ -1,0 +1,25 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hystrix-dashboard
+  labels:
+    name: hystrix-dashboard
+  namespace: my-store
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: hystrix-dashboard
+    spec:
+      containers:
+      - name: hystrix-dashboard
+        image: sangdongvan/hystrix-dashboard:0.0.1-SNAPSHOT
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: kubernetes
+        ports:
+        - containerPort: 6161
+      nodeSelector:
+        beta.kubernetes.io/os: linux
