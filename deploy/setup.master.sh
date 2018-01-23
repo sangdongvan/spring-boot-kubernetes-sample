@@ -70,3 +70,26 @@ cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 chown $(id -u):$(id -g) $HOME/.kube/config
 
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documentation/kube-flannel.yml
+
+# ----------------------------------------------------------------------------
+# 6. Set up Kubernetes Dashboard (unsecure)
+# ----------------------------------------------------------------------------
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.8.2/src/deploy/alternatives/kubernetes-dashboard.yaml
+
+cat <<EOF | kubectl create -f -
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: kubernetes-dashboard
+  labels:
+    k8s-app: kubernetes-dashboard
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: kubernetes-dashboard
+  namespace: kube-system
+EOF
