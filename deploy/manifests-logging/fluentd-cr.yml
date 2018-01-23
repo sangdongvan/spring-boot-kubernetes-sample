@@ -5,5 +5,5 @@ metadata:
   name: fluentd
 rules:
 - apiGroups: [""] # "" indicates the core API group
-  resources: ["pods"]
+  resources: ["pods", "namespaces"]
   verbs: ["get", "watch", "list"]
