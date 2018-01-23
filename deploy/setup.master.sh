@@ -75,7 +75,7 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documen
 # 6. Set up Kubernetes Dashboard (unsecure)
 # ----------------------------------------------------------------------------
 
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.8.2/src/deploy/alternatives/kubernetes-dashboard.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.8.2/src/deploy/alternative/kubernetes-dashboard.yaml
 
 cat <<EOF | kubectl create -f -
 apiVersion: rbac.authorization.k8s.io/v1beta1
