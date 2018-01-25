@@ -2,24 +2,24 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: user-service
+  name: edge-service
   labels:
-    name: user-service
+    name: edge-service
   namespace: my-store
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: user-service
+        name: edge-service
     spec:
       containers:
-      - name: user-service
-        image: sangdongvan/user-service:0.0.1-SNAPSHOT
-        ports:
-        - containerPort: 8181
+      - name: edge-service
+        image: sangdongvan/edge-service:0.0.1-SNAPSHOT
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: kubernetes
+        ports:
+        - containerPort: 9999
       nodeSelector:
         beta.kubernetes.io/os: linux

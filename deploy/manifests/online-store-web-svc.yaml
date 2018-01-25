@@ -7,10 +7,10 @@ metadata:
     name: online-store-web
   namespace: my-store
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
-  - port: 80
+  - port: 8787
     targetPort: 8787
-    nodePort: 30001
+    nodePort: 31603
   selector:
-    name: front-end
+    name: online-store-web

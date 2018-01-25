@@ -1,10 +1,3 @@
-server:
-  port: 8181
-  contextPath: /uaa
-security:
-  user:
-    password: password
-  enable-csrf: false
 spring:
   profiles: kubernetes
   datasource:
@@ -12,13 +5,19 @@ spring:
     username: root
     password: dbpass
     initialize: true
-security.ignored: /resources/**
+server:
+  port: 8080
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://159.89.211.108:31604/uaa/user
+    client:
+      client-id: acme
 eureka:
   instance:
     prefer-ip-address: true
-    non-secure-port: 8181
   client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://discovery-service:8761/eureka/
+      defaultZone: http://discovery-service/eureka/

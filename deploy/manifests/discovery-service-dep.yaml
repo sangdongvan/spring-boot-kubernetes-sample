@@ -2,22 +2,22 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: user-service
+  name: discovery-service
   labels:
-    name: user-service
+    name: discovery-service
   namespace: my-store
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: user-service
+        name: discovery-service
     spec:
       containers:
-      - name: user-service
-        image: sangdongvan/user-service:0.0.1-SNAPSHOT
+      - name: discovery-service
+        image: sangdongvan/discovery-service:0.0.1-SNAPSHOT
         ports:
-        - containerPort: 8181
+        - containerPort: 8761
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: kubernetes
