@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @SpringBootApplication
 @EnableZuulProxy
-@EnableEurekaClient
 @EnableOAuth2Sso
 @EnableHystrix
 public class OnlineStoreApplication extends WebSecurityConfigurerAdapter {

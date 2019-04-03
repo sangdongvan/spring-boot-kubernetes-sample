@@ -1,6 +1,5 @@
 ---
 spring:
-  profiles: kubernetes
   application:
     name: online-store-web
 zuul:
@@ -8,26 +7,17 @@ zuul:
   routes:
     edge-service:
       path: /api/**
-      url: http://edge-service:9999
+      url: http://edge-service
     auth-service:
       path: /user/**
-      url: http://159.89.211.108:31604/uaa/user
+      url: http://auth-service/uaa/user
 security:
   enable-csrf: false
   oauth2:
     resource:
-      userInfoUri: http://159.89.211.108:31604/uaa/user
+      userInfoUri: http://auth-service/uaa/user
     client:
-      accessTokenUri: http://159.89.211.108:31604/uaa/oauth/token
-      userAuthorizationUri: http://159.89.211.108:31604/uaa/oauth/authorize
+      accessTokenUri: http://auth-service/uaa/oauth/token
+      userAuthorizationUri: http://auth-service/uaa/oauth/authorize
       clientId: acme
       clientSecret: acmesecret
-eureka:
-  instance:
-    non-secure-port: 8787
-    prefer-ip-address: true
-  client:
-    registerWithEureka: true
-    fetchRegistry: true
-    serviceUrl:
-      defaultZone: http://192.168.99.100:8761/eureka/
