@@ -3,7 +3,6 @@ package demo.cart;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import demo.catalog.Catalog;
-import org.apache.log4j.Logger;
 import reactor.core.publisher.Flux;
 
 import java.util.*;
@@ -17,7 +16,6 @@ import java.util.stream.Stream;
  */
 public class ShoppingCart {
 
-    private Logger log = Logger.getLogger(ShoppingCart.class);
     private Map<String, Integer> productMap = new HashMap<>();
     private List<LineItem> lineItems = new ArrayList<>();
     private Catalog catalog;
@@ -85,8 +83,8 @@ public class ShoppingCart {
                         CartEventType.REMOVE_ITEM));
 
         // The CartEvent's type must be either ADD_ITEM or REMOVE_ITEM
-        if (validCartEventTypes.exists(cartEventType ->
-                cartEvent.getCartEventType().equals(cartEventType)).get()) {
+        if (validCartEventTypes.any(cartEventType ->
+                cartEvent.getCartEventType().equals(cartEventType)).block()) {
             // Update the aggregate view of each line item's quantity from the event type
             productMap.put(cartEvent.getProductId(),
                     productMap.getOrDefault(cartEvent.getProductId(), 0) +

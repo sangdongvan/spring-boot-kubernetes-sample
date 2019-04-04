@@ -1,54 +1,35 @@
 spring:
   profiles:
-    active: development
+    active: default,localhost
 ---
+spring:
+  profiles: default
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: false
+      ddl-auto: none
 server:
-  port: 8181
-  contextPath: /uaa
-security:
-  user:
-    password: password
-  enable-csrf: false
+  port: 18027
+---
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+spring:
+  profiles: localhost
+  datasource:
+    url: jdbc:mysql://localhost:17023/dev
+    username: root
+    password: dbpass
 logging.level.org.springframework.security: DEBUG
-spring:
-  profiles: development
-  datasource:
-    url: jdbc:mysql://localhost:3306/dev
-    username: root
-    password: dbpass
-    initialize: true
-security.ignored: /resources/**
----
-server:
-  port: 8181
-  contextPath: /uaa
-security:
-  user:
-    password: password
-  enable-csrf: false
-spring:
-  profiles: docker
-  datasource:
-    url: jdbc:mysql://mysql:3306/dev
-    username: root
-    password: dbpass
-    initialize: true
-security.ignored: /resources/**
-eureka:
-  instance:
-    prefer-ip-address: true
-    non-secure-port: 8181
-  client:
-    registerWithEureka: true
-    fetchRegistry: true
-    serviceUrl:
-      defaultZone: http://discovery-service:8761/eureka/
 ---
 spring:
   profiles: test
-  jpa:
-    show_sql: false
-    database: H2
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE
-    initialize: false
+    url: jdbc:mysql://localhost:17023/test
+    username: root
+    password: dbpass
+  jpa:
+    hibernate:
+      ddl-auto: create

@@ -14,9 +14,10 @@ import demo.shipment.ShipmentRepository;
 import demo.shipment.ShipmentStatus;
 import demo.warehouse.Warehouse;
 import demo.warehouse.WarehouseRepository;
+import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.neo4j.config.Neo4jConfiguration;
+import org.springframework.data.neo4j.transaction.SessionFactoryUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -33,25 +34,25 @@ public class DatabaseInitializer {
     private AddressRepository addressRepository;
     private CatalogRepository catalogRepository;
     private InventoryRepository inventoryRepository;
-    private Neo4jConfiguration neo4jConfiguration;
+    private SessionFactory neo4jSessionFactory;
 
     @Autowired
     public DatabaseInitializer(ProductRepository productRepository, ShipmentRepository shipmentRepository,
                                WarehouseRepository warehouseRepository, AddressRepository addressRepository,
                                CatalogRepository catalogRepository, InventoryRepository inventoryRepository,
-                               Neo4jConfiguration neo4jConfiguration) {
+                               SessionFactory neo4jSessionFactory) {
         this.productRepository = productRepository;
         this.shipmentRepository = shipmentRepository;
         this.warehouseRepository = warehouseRepository;
         this.addressRepository = addressRepository;
         this.catalogRepository = catalogRepository;
         this.inventoryRepository = inventoryRepository;
-        this.neo4jConfiguration = neo4jConfiguration;
+        this.neo4jSessionFactory = neo4jSessionFactory;
     }
 
     public void populate() throws Exception {
 
-        neo4jConfiguration.getSession().query(
+        SessionFactoryUtils.getSession(neo4jSessionFactory).query(
                 "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n, r;", new HashMap<>())
                 .queryResults();
 
@@ -89,7 +90,7 @@ public class DatabaseInitializer {
                 .stream()
                 .collect(Collectors.toList());
 
-        productRepository.save(products);
+        productRepository.saveAll(products);
         Catalog catalog = new Catalog("Fall Catalog", 0L);
         catalog.getProducts().addAll(products);
         catalogRepository.save(catalog);
@@ -101,7 +102,7 @@ public class DatabaseInitializer {
                 "CA", "Mountain View", "United States", 94043);
 
         // Save the addresses
-        addressRepository.save(Arrays.asList(warehouseAddress, shipToAddress));
+        addressRepository.saveAll(Arrays.asList(warehouseAddress, shipToAddress));
         warehouse.setAddress(warehouseAddress);
         warehouse = warehouseRepository.save(warehouse);
         Warehouse finalWarehouse = warehouse;
@@ -113,11 +114,11 @@ public class DatabaseInitializer {
                         .collect(Collectors.joining("")), a, finalWarehouse, InventoryStatus.IN_STOCK))
                 .collect(Collectors.toSet());
 
-        inventoryRepository.save(inventories);
+        inventoryRepository.saveAll(inventories);
 
         // Generate 10 extra inventory for each product
         for (int i = 0; i < 10; i++) {
-            inventoryRepository.save(products.stream()
+            inventoryRepository.saveAll(products.stream()
                     .map(a -> new Inventory(IntStream.range(0, 9)
                             .mapToObj(x -> Integer.toString(new Random().nextInt(9)))
                             .collect(Collectors.joining("")), a, finalWarehouse, InventoryStatus.IN_STOCK))

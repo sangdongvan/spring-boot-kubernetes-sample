@@ -1,20 +1,19 @@
 package demo.catalog;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.UUID;
 
 @Entity
 public class CatalogInfo implements Serializable {
 
-    @Id
-    private String id;
+    private Long id;
     private Long catalogId;
     private Boolean active;
 
     public CatalogInfo() {
-        id = UUID.randomUUID().toString();
         active = false;
     }
 
@@ -28,11 +27,13 @@ public class CatalogInfo implements Serializable {
         this.active = active;
     }
 
-    public String getId() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

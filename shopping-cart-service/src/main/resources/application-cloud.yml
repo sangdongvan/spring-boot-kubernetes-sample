@@ -1,0 +1,7 @@
+---
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://auth.learnmicroservices.org/uaa/user
+    client:
+      client-id: acme

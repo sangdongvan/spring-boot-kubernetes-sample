@@ -1,13 +1,10 @@
 package demo.api.v1;
 
-
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import demo.catalog.Catalog;
 import demo.catalog.CatalogInfo;
 import demo.catalog.CatalogInfoRepository;
 import demo.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,12 +17,11 @@ public class CatalogServiceV1 {
 
     @Autowired
     public CatalogServiceV1(CatalogInfoRepository catalogInfoRepository,
-                            @LoadBalanced RestTemplate restTemplate) {
+                            RestTemplate restTemplate) {
         this.catalogInfoRepository = catalogInfoRepository;
         this.restTemplate = restTemplate;
     }
 
-    @HystrixCommand
     public Catalog getCatalog() {
         Catalog catalog;
 
@@ -41,7 +37,6 @@ public class CatalogServiceV1 {
         return catalog;
     }
 
-    @HystrixCommand
     public Product getProduct(String productId) {
         return restTemplate.getForObject(String.format("http://inventory-service/v1/products/%s",
                 productId), Product.class);

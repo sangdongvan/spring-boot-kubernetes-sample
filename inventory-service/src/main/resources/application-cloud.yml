@@ -1,0 +1,4 @@
+spring:
+  data:
+    neo4j:
+      uri: bolt://neo4j

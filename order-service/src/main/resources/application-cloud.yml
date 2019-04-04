@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://user:pwd@mongo/orders
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://auth.learnmicroservices.org/uaa/user
+    client:
+      client-id: acme

@@ -1,0 +1,23 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+zuul:
+  ignored-services: '*'
+  routes:
+    edge-service:
+      path: /api/**
+      url: http://edge-service
+    auth-service:
+      path: /user/**
+      url: http://auth-service/uaa/user
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://auth.learnmicroservices.org/uaa/user
+    client:
+      accessTokenUri: http://auth.learnmicroservices.org/uaa/oauth/token
+      userAuthorizationUri: http://auth.learnmicroservices.org/uaa/oauth/authorize
+      clientId: acme
+      clientSecret: acmesecret

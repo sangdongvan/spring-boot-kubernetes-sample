@@ -3,14 +3,13 @@ package demo;
 import demo.order.Order;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
+import org.springframework.hateoas.hal.HalConfiguration;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
@@ -29,7 +28,6 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableJpaRepositories
 @EnableJpaAuditing
-@EnableEurekaClient
 @EnableResourceServer
 @EnableOAuth2Client
 @EnableHystrix
@@ -38,17 +36,20 @@ public class ShoppingCartApplication {
         SpringApplication.run(ShoppingCartApplication.class, args);
     }
 
-    @LoadBalanced
     @Bean
     public OAuth2RestTemplate loadBalancedOauth2RestTemplate(
             OAuth2ProtectedResourceDetails resource, OAuth2ClientContext context) {
         return new OAuth2RestTemplate(resource, context);
     }
 
-    @LoadBalanced
     @Bean(name = "normalRestTemplate")
     public RestTemplate loadBalancedRestTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public HalConfiguration halConfiguration() {
+        return new HalConfiguration();
     }
 
     @Component

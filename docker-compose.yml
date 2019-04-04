@@ -15,20 +15,23 @@ hystrix-dashboard:
 mysql:
   image: mysql:5.7
   ports:
-   - 3306:3306
+   - 17023:3306
   environment:
    - MYSQL_ROOT_PASSWORD=dbpass
-   - MYSQL_DATABASE=dev
+  entrypoint:
+    sh -c "echo 'CREATE DATABASE IF NOT EXISTS dev; CREATE DATABASE IF NOT EXISTS test;' > /docker-entrypoint-initdb.d/init.sql; /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
 neo4j:
   image: neo4j:2.3
   ports:
-   - 7474:7474
+   - 17021:7474
   environment:
    - NEO4J_AUTH=none
 mongo:
   image: mongo:3.3
   ports:
-   - 27017:27017
+   - 17022:27017
+  environment:
+    MONGODB_PASSWORD: "pwd"
 redis:
   image: redis:3.0
   ports:
@@ -36,7 +39,7 @@ redis:
 user-service:
   image: sangdongvan/user-service:0.0.1-SNAPSHOT
   ports:
-   - 8181:8181
+   - 18027:18027
   links:
    - mysql
    - discovery-service

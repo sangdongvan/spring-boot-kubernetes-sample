@@ -14,6 +14,8 @@ import javax.persistence.*;
 @Entity
 public class CreditCard extends BaseEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String number;
 

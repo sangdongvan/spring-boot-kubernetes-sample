@@ -1,0 +1,13 @@
+spring:
+  redis:
+    host: redis
+    port: 6379
+  datasource:
+    url: jdbc:mysql://mysql/dev?useSSL=false
+    username: root
+    password: dbpass
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus

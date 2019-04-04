@@ -17,13 +17,14 @@ import demo.warehouse.WarehouseRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.neo4j.ogm.session.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.data.neo4j.config.Neo4jConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.neo4j.transaction.SessionFactoryUtils;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,9 +34,9 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {InventoryApplication.class})
-@ActiveProfiles(profiles = "test")
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {InventoryApplication.class})
+@ActiveProfiles(profiles = "default,test")
 public class InventoryApplicationTests {
 
     private Logger log = LoggerFactory.getLogger(InventoryApplicationTests.class);
@@ -60,12 +61,12 @@ public class InventoryApplicationTests {
     private InventoryRepository inventoryRepository;
 
     @Autowired
-    private Neo4jConfiguration neo4jConfiguration;
+    private SessionFactory neo4jSessionFactory;
 
     @Before
     public void setup() {
         try {
-            neo4jConfiguration.getSession().query(
+            SessionFactoryUtils.getSession(neo4jSessionFactory).query(
                     "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n, r;", new HashMap<>())
                     .queryResults();
         } catch (Exception e) {
@@ -107,9 +108,9 @@ public class InventoryApplicationTests {
                     .stream()
                     .collect(Collectors.toList());
 
-            productRepository.save(products);
+            productRepository.saveAll(products);
 
-            Product product1 = productRepository.findOne(products.get(0).getId());
+            Product product1 = productRepository.findById(products.get(0).getId()).orElse(null);
 
             assertThat(product1, is(notNullValue()));
             assertThat(product1.getName(), is(products.get(0).getName()));
@@ -121,7 +122,7 @@ public class InventoryApplicationTests {
 
             catalogRepository.save(catalog);
 
-            Catalog catalog1 = catalogRepository.findOne(catalog.getId());
+            Catalog catalog1 = catalogRepository.findById(catalog.getId()).orElse(null);
 
             assertThat(catalog1, is(notNullValue()));
             assertThat(catalog1.getName(), is(catalog.getName()));
@@ -133,14 +134,14 @@ public class InventoryApplicationTests {
                     "CA", "Mountain View", "United States", 94043);
 
             // Save the addresses
-            addressRepository.save(Arrays.asList(warehouseAddress, shipToAddress));
+            addressRepository.saveAll(Arrays.asList(warehouseAddress, shipToAddress));
 
-            Address address1 = addressRepository.findOne(shipToAddress.getId());
+            Address address1 = addressRepository.findById(shipToAddress.getId()).orElse(null);
 
             assertThat(address1, is(notNullValue()));
             assertThat(address1.toString(), is(shipToAddress.toString()));
 
-            Address address2 = addressRepository.findOne(warehouseAddress.getId());
+            Address address2 = addressRepository.findById(warehouseAddress.getId()).orElse(null);
 
             assertThat(address2, is(notNullValue()));
             assertThat(address2.toString(), is(warehouseAddress.toString()));
@@ -151,7 +152,7 @@ public class InventoryApplicationTests {
             warehouse.setAddress(warehouseAddress);
             warehouse = warehouseRepository.save(warehouse);
 
-            Warehouse warehouse1 = warehouseRepository.findOne(warehouse.getId());
+            Warehouse warehouse1 = warehouseRepository.findById(warehouse.getId()).orElse(null);
 
             assertThat(warehouse1, is(notNullValue()));
             assertThat(warehouse1.toString(), is(warehouse.toString()));
@@ -167,14 +168,14 @@ public class InventoryApplicationTests {
                             .collect(Collectors.joining("")), a, finalWarehouse, InventoryStatus.IN_STOCK))
                     .collect(Collectors.toSet());
 
-            inventoryRepository.save(inventories);
+            inventoryRepository.saveAll(inventories);
 
             Shipment shipment = new Shipment(inventories, shipToAddress,
                     warehouse, ShipmentStatus.SHIPPED);
 
             shipmentRepository.save(shipment);
 
-            Shipment shipment1 = shipmentRepository.findOne(shipment.getId());
+            Shipment shipment1 = shipmentRepository.findById(shipment.getId()).orElse(null);
 
             assertThat(shipment1, is(notNullValue()));
             assertThat(shipment1.toString(), is(shipment.toString()));

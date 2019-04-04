@@ -1,14 +1,10 @@
 package demo.config;
 
-import com.mongodb.Mongo;
-import com.mongodb.MongoClient;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
-import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
-import org.springframework.data.mongodb.core.convert.CustomConversions;
+import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,36 +17,14 @@ import java.util.List;
  * @author Josh Long
  */
 @Configuration
-public class MongoConfiguration extends AbstractMongoConfiguration {
-
-    @Value("${spring.data.mongodb.host}")
-    private String host;
-
-    @Value("${spring.data.mongodb.port}")
-    private Integer port;
+public class MongoConfiguration {
 
     @Bean
-    public Mongo mongo() throws Exception {
-        return new MongoClient(host, port);
-    }
-
-    @Override
-    public String getDatabaseName() {
-        return "orders";
-    }
-
-    @Override
-    public String getMappingBasePackage() {
-        return "demo";
-    }
-
-    @Bean
-    @Override
-    public CustomConversions customConversions() {
+    public MongoCustomConversions mongoCustomConversions() {
         List<Converter<?, ?>> converterList = new ArrayList<>();
         converterList.add(new LongToDateTimeConverter());
         converterList.add(new StringToDateTimeConverter());
-        return new CustomConversions(converterList);
+        return new MongoCustomConversions(converterList);
     }
 
     @ReadingConverter

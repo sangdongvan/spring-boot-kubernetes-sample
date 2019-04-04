@@ -4,7 +4,6 @@ import demo.account.Account;
 import demo.account.AccountRepository;
 import demo.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,7 @@ public class AccountServiceV1 {
 
     @Autowired
     public AccountServiceV1(AccountRepository accountRepository,
-                            @LoadBalanced OAuth2RestTemplate oAuth2RestTemplate) {
+                            OAuth2RestTemplate oAuth2RestTemplate) {
         this.accountRepository = accountRepository;
         this.oAuth2RestTemplate = oAuth2RestTemplate;
     }

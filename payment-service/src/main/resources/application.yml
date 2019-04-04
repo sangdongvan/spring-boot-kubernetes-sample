@@ -1,25 +1,39 @@
 spring:
   profiles:
-    active: test
+    active: default,localhost
 ---
 spring:
-  profiles: development
+  profiles: default
+  cache:
+    type: redis
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: false
+      ddl-auto: update
+server:
+  port: 18026
+---
+spring:
+  profiles: localhost
   redis:
     host: localhost
     port: 6379
-  jpa:
-    show_sql: false
-    database: MYSQL
-    generate-ddl: true
   datasource:
-    url: jdbc:mysql://192.168.99.100:3306/dev?useSSL=false
+    url: jdbc:mysql://localhost:17023/dev?useSSL=false
     username: root
     password: dbpass
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 ---
 spring:
   profiles: test
   redis:
     host: localhost
     port: 6379
-  jpa:
-    database: H2
+  datasource:
+    url: jdbc:mysql://localhost:17023/test?useSSL=false
+    username: root
+    password: dbpass
