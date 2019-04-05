@@ -1,7 +1,20 @@
----
+spring:
+  datasource:
+    url: jdbc:mysql://mysql:17023/dev?useSSL=false
+    username: root
+    password: dbpass
+    initialization-mode: always
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
 security:
   oauth2:
     resource:
       userInfoUri: http://auth.learnmicroservices.org/uaa/user
     client:
-      client-id: acme
+      accessTokenUri: http://auth.learnmicroservices.org/uaa/oauth/token
+      userAuthorizationUri: http://auth.learnmicroservices.org/uaa/oauth/authorize
+      clientId: acme
+      clientSecret: acmesecret

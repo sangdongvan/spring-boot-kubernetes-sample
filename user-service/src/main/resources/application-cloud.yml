@@ -8,3 +8,4 @@ spring:
     url: jdbc:mysql://mysql/dev
     username: root
     password: dbpass
+    initialization-mode: always

@@ -52,6 +52,7 @@ This reference application uses the following mixture of databases.
 - 18025 order-service
 - 18026 payment-service
 - 18027 user-service
+- 18028 catalog-service
 
 ### Integration Testing
 

@@ -18,10 +18,24 @@ zuul:
   ignored-services: "*"
   ignoredPatterns: /**/api/**
   routes:
-    account-service: /account/**
-    payment-service: /payment/**
-    inventory-service: /inventory/**
-    order-service: /order/**
-    user-service: /user/**
-    catalog-service: /catalog/**
-    shopping-cart-service: /shoppingcart/**
+    account-service:
+      path: /account/**
+      url: http://localhost:18022
+    payment-service:
+      path: /payment/**
+      url: http://localhost:18026
+    inventory-service:
+      path: /inventory/**
+      url: http://localhost:18023
+    order-service:
+      path: /order/**
+      url: http://localhost:18025
+    user-service:
+      path: /user/**
+      url: http://localhost:18027
+    catalog-service:
+      path: /catalog/**
+      url: http://localhost:18028
+    shopping-cart-service:
+      path: /shoppingcart/**
+      url: http://localhost:18024

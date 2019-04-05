@@ -6,6 +6,7 @@ spring:
     url: jdbc:mysql://mysql/dev?useSSL=false
     username: root
     password: dbpass
+    initialization-mode: always
 management:
   endpoints:
     web:

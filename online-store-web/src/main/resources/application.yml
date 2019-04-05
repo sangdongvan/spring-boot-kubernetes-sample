@@ -23,7 +23,7 @@ zuul:
   routes:
     edge-service:
       path: /api/**
-      url: http://localhost:9999
+      url: http://localhost:18020
     auth-service:
       path: /user/**
       url: http://localhost:18027/uaa/user

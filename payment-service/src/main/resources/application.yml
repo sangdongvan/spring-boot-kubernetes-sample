@@ -22,6 +22,7 @@ spring:
     url: jdbc:mysql://localhost:17023/dev?useSSL=false
     username: root
     password: dbpass
+    initialization-mode: always
 management:
   endpoints:
     web:

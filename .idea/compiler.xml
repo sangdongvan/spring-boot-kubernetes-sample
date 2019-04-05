@@ -10,11 +10,11 @@
         <module name="account-service" />
         <module name="shopping-cart-service" />
         <module name="inventory-service" />
+        <module name="online-store-web" />
         <module name="payment-service" />
         <module name="order-service" />
         <module name="edge-service" />
         <module name="user-service" />
-        <module name="online-store-web" />
       </profile>
     </annotationProcessing>
   </component>

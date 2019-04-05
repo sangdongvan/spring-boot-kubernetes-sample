@@ -4,39 +4,52 @@ spring:
 ---
 spring:
   profiles: default
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: false
+      ddl-auto: none
 server:
   port: 18024
 ---
 spring:
   profiles: localhost
   datasource:
-    url: jdbc:mysql://localhost:17023/dev
+    url: jdbc:mysql://localhost:17023/dev?useSSL=false
     username: root
     password: dbpass
-    platform: mysql
+    initialization-mode: always
 security:
   oauth2:
     resource:
       userInfoUri: http://localhost:18027/uaa/user
     client:
-      client-id: acme
-      access-token-uri: http://localhost:8787
+      accessTokenUri: http://localhost:18027/uaa/oauth/token
+      userAuthorizationUri: http://localhost:18027/uaa/oauth/authorize
+      clientId: acme
+      clientSecret: acmesecret
 #  enable-csrf: false
 #  ignored: /api/**
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 ---
 spring:
-  application:
-    name: account-service
   profiles: test
+  jpa:
+    hibernate:
+      ddl-auto: create
   datasource:
     url: jdbc:mysql://localhost:17023/test
     username: root
     password: dbpass
-    platform: mysql
 security:
   oauth2:
     resource:
       userInfoUri: http://localhost:18027/uaa/user
     client:
-      client-id: acme
-      access-token-uri: http://localhost:8787
+      accessTokenUri: http://localhost:18027/uaa/oauth/token
+      userAuthorizationUri: http://localhost:18027/uaa/oauth/authorize
+      clientId: acme
+      clientSecret: acmesecret
