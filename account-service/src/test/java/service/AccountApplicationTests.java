@@ -14,13 +14,15 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = AccountApplication.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = AccountApplication.class)
 @ActiveProfiles(profiles = "default,test")
+@WebIntegrationTest
 public class AccountApplicationTests extends TestCase {
 
     private Logger log = LoggerFactory.getLogger(AccountApplicationTests.class);
@@ -59,6 +61,6 @@ public class AccountApplicationTests extends TestCase {
         customer = customerRepository.save(customer);
 
         // Query for the customer object to ensure cascading persistence of the object graph
-        log.info(customerRepository.findById(customer.getId()).toString());
+        log.info(customerRepository.findOne(customer.getId()).toString());
     }
 }

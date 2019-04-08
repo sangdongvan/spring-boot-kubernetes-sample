@@ -17,17 +17,18 @@ spring:
   profiles: localhost
   data:
     mongodb:
-      uri: mongodb://user:pwd@localhost:17022/orders
+      host: localhost
+      port: 17022
 security:
   oauth2:
     resource:
       userInfoUri: http://localhost:18027/uaa/user
     client:
       client-id: acme
-#  ignored: /api/**
 ---
 spring:
   profiles: test
   data:
     mongodb:
-      uri: mongodb://user:pwd@localhost:17022/test-orders
+      host: localhost
+      port: 17022

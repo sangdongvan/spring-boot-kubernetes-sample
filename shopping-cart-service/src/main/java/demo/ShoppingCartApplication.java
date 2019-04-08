@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
-import org.springframework.hateoas.hal.HalConfiguration;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
@@ -45,11 +44,6 @@ public class ShoppingCartApplication {
     @Bean(name = "normalRestTemplate")
     public RestTemplate loadBalancedRestTemplate() {
         return new RestTemplate();
-    }
-
-    @Bean
-    public HalConfiguration halConfiguration() {
-        return new HalConfiguration();
     }
 
     @Component

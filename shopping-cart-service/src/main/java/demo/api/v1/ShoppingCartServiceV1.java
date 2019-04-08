@@ -58,7 +58,7 @@ public class ShoppingCartServiceV1 {
      * @return the currently authenticated user
      */
     public User getAuthenticatedUser() {
-        return oAuth2RestTemplate.getForObject("http://user-service/uaa/v1/me", User.class);
+        return oAuth2RestTemplate.getForObject("http://localhost:18027/uaa/v1/me", User.class);
     }
 
     /**
@@ -95,10 +95,10 @@ public class ShoppingCartServiceV1 {
      * @throws Exception
      */
     public ShoppingCart getShoppingCart() throws Exception {
-        User user = oAuth2RestTemplate.getForObject("http://user-service/uaa/v1/me", User.class);
+        User user = oAuth2RestTemplate.getForObject("http://localhost:18027/uaa/v1/me", User.class);
         ShoppingCart shoppingCart = null;
         if (user != null) {
-            Catalog catalog = restTemplate.getForObject("http://catalog-service/v1/catalog", Catalog.class);
+            Catalog catalog = restTemplate.getForObject("http://localhost:18028/v1/catalog", Catalog.class);
             shoppingCart = aggregateCartEvents(user, catalog);
         }
         return shoppingCart;
@@ -120,7 +120,7 @@ public class ShoppingCartServiceV1 {
         ShoppingCart shoppingCart = cartEvents
                 .takeWhile(cartEvent -> !ShoppingCart.isTerminal(cartEvent.getCartEventType()))
                 .reduceWith(() -> new ShoppingCart(catalog), ShoppingCart::incorporate)
-                .block();
+                .get();
 
         shoppingCart.getLineItems();
 
@@ -146,7 +146,7 @@ public class ShoppingCartServiceV1 {
         if (currentCart != null) {
             // Reconcile the current cart with the available inventory
             Inventory[] inventory =
-                    oAuth2RestTemplate.getForObject(String.format("http://inventory-service/v1/inventory?productIds=%s", currentCart.getLineItems()
+                    oAuth2RestTemplate.getForObject(String.format("http://localhost:18023/v1/inventory?productIds=%s", currentCart.getLineItems()
                             .stream()
                             .map(LineItem::getProductId)
                             .collect(Collectors.joining(","))), Inventory[].class);
@@ -161,7 +161,7 @@ public class ShoppingCartServiceV1 {
                     // Reserve the available inventory
 
                     // Create a new order
-                    Order orderResponse = oAuth2RestTemplate.postForObject("http://order-service/v1/orders",
+                    Order orderResponse = oAuth2RestTemplate.postForObject("http://localhost:18025/v1/orders",
                             currentCart.getLineItems().stream()
                                     .map(prd ->
                                             new demo.order.LineItem(prd.getProduct().getName(),
@@ -175,13 +175,13 @@ public class ShoppingCartServiceV1 {
                         checkoutResult.setResultMessage("Order created");
 
                         // Add order event
-                        oAuth2RestTemplate.postForEntity(String.format("http://order-service/v1/orders/%s/events", orderResponse.getOrderId()),
+                        oAuth2RestTemplate.postForEntity(String.format("http://localhost:18025/v1/orders/%s/events", orderResponse.getOrderId()),
                                 new OrderEvent(OrderEventType.CREATED, orderResponse.getOrderId()), ResponseEntity.class);
 
                         checkoutResult.setOrder(orderResponse);
                     }
 
-                    User user = oAuth2RestTemplate.getForObject("http://user-service/uaa/v1/me", User.class);
+                    User user = oAuth2RestTemplate.getForObject("http://localhost:18027/uaa/v1/me", User.class);
 
                     // Clear the shopping cart
                     addCartEvent(new CartEvent(CartEventType.CHECKOUT, user.getId()), user);

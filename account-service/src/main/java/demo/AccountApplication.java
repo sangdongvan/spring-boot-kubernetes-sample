@@ -2,13 +2,12 @@ package demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
-import org.springframework.hateoas.hal.HalConfiguration;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
@@ -28,6 +27,7 @@ import org.springframework.stereotype.Component;
 @EnableFeignClients
 @EnableResourceServer
 @EnableOAuth2Client
+@EnableHystrix
 public class AccountApplication {
     public static void main(String[] args) {
         SpringApplication.run(AccountApplication.class, args);
@@ -47,10 +47,4 @@ public class AccountApplication {
             config.setBasePath("/api");
         }
     }
-
-    @Bean
-    public HalConfiguration halConfiguration() {
-        return new HalConfiguration();
-    }
-
 }

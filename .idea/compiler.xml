@@ -10,25 +10,25 @@
         <module name="account-service" />
         <module name="shopping-cart-service" />
         <module name="inventory-service" />
-        <module name="online-store-web" />
         <module name="payment-service" />
         <module name="order-service" />
         <module name="edge-service" />
         <module name="user-service" />
+        <module name="online-store-web" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="account-service" options="-parameters" />
+      <module name="account-service" options="" />
       <module name="catalog-service" options="-parameters" />
-      <module name="edge-service" options="-parameters" />
-      <module name="inventory-service" options="-parameters" />
-      <module name="online-store-web" options="-parameters" />
-      <module name="order-service" options="-parameters" />
+      <module name="edge-service" options="" />
+      <module name="inventory-service" options="" />
+      <module name="online-store-web" options="" />
+      <module name="order-service" options="" />
       <module name="payment-service" options="-parameters" />
-      <module name="shopping-cart-service" options="-parameters" />
-      <module name="user-service" options="-parameters" />
+      <module name="shopping-cart-service" options="" />
+      <module name="user-service" options="" />
     </option>
   </component>
 </project>

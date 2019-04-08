@@ -14,10 +14,9 @@ import demo.shipment.ShipmentRepository;
 import demo.shipment.ShipmentStatus;
 import demo.warehouse.Warehouse;
 import demo.warehouse.WarehouseRepository;
-import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.neo4j.transaction.SessionFactoryUtils;
+import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,7 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
-@Profile({"docker", "cloud", "development"})
+@Profile({"localhost", "cloud"})
 public class DatabaseInitializer {
 
     private ProductRepository productRepository;
@@ -34,25 +33,25 @@ public class DatabaseInitializer {
     private AddressRepository addressRepository;
     private CatalogRepository catalogRepository;
     private InventoryRepository inventoryRepository;
-    private SessionFactory neo4jSessionFactory;
+    private Neo4jConfiguration neo4jConfiguration;
 
     @Autowired
     public DatabaseInitializer(ProductRepository productRepository, ShipmentRepository shipmentRepository,
                                WarehouseRepository warehouseRepository, AddressRepository addressRepository,
                                CatalogRepository catalogRepository, InventoryRepository inventoryRepository,
-                               SessionFactory neo4jSessionFactory) {
+                               Neo4jConfiguration neo4jConfiguration) {
         this.productRepository = productRepository;
         this.shipmentRepository = shipmentRepository;
         this.warehouseRepository = warehouseRepository;
         this.addressRepository = addressRepository;
         this.catalogRepository = catalogRepository;
         this.inventoryRepository = inventoryRepository;
-        this.neo4jSessionFactory = neo4jSessionFactory;
+        this.neo4jConfiguration = neo4jConfiguration;
     }
 
     public void populate() throws Exception {
 
-        SessionFactoryUtils.getSession(neo4jSessionFactory).query(
+        neo4jConfiguration.getSession().query(
                 "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n, r;", new HashMap<>())
                 .queryResults();
 
@@ -90,7 +89,7 @@ public class DatabaseInitializer {
                 .stream()
                 .collect(Collectors.toList());
 
-        productRepository.saveAll(products);
+        productRepository.save(products);
         Catalog catalog = new Catalog("Fall Catalog", 0L);
         catalog.getProducts().addAll(products);
         catalogRepository.save(catalog);
@@ -102,7 +101,7 @@ public class DatabaseInitializer {
                 "CA", "Mountain View", "United States", 94043);
 
         // Save the addresses
-        addressRepository.saveAll(Arrays.asList(warehouseAddress, shipToAddress));
+        addressRepository.save(Arrays.asList(warehouseAddress, shipToAddress));
         warehouse.setAddress(warehouseAddress);
         warehouse = warehouseRepository.save(warehouse);
         Warehouse finalWarehouse = warehouse;
@@ -114,11 +113,11 @@ public class DatabaseInitializer {
                         .collect(Collectors.joining("")), a, finalWarehouse, InventoryStatus.IN_STOCK))
                 .collect(Collectors.toSet());
 
-        inventoryRepository.saveAll(inventories);
+        inventoryRepository.save(inventories);
 
         // Generate 10 extra inventory for each product
         for (int i = 0; i < 10; i++) {
-            inventoryRepository.saveAll(products.stream()
+            inventoryRepository.save(products.stream()
                     .map(a -> new Inventory(IntStream.range(0, 9)
                             .mapToObj(x -> Integer.toString(new Random().nextInt(9)))
                             .collect(Collectors.joining("")), a, finalWarehouse, InventoryStatus.IN_STOCK))

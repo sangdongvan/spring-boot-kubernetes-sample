@@ -4,7 +4,6 @@ import demo.account.Account;
 import demo.address.AddressType;
 import demo.order.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -24,14 +23,14 @@ public class OrderServiceV1 {
     @Autowired
     public OrderServiceV1(OrderRepository orderRepository,
                           OrderEventRepository orderEventRepository,
-                          @LoadBalanced OAuth2RestTemplate oAuth2RestTemplate) {
+                          OAuth2RestTemplate oAuth2RestTemplate) {
         this.orderRepository = orderRepository;
         this.orderEventRepository = orderEventRepository;
         this.oAuth2RestTemplate = oAuth2RestTemplate;
     }
 
     public Order createOrder(List<LineItem> lineItems) {
-        Account[] accounts = oAuth2RestTemplate.getForObject("http://account-service/v1/accounts", Account[].class);
+        Account[] accounts = oAuth2RestTemplate.getForObject("http://localhost:18022/v1/accounts", Account[].class);
 
         Account defaultAccount = Arrays.asList(accounts).stream()
                 .filter(Account::getDefaultAccount)
@@ -55,7 +54,7 @@ public class OrderServiceV1 {
 
     public Boolean addOrderEvent(OrderEvent orderEvent, Boolean validate) throws Exception {
         // Get the order for the event
-        Order order = orderRepository.findById(orderEvent.getOrderId()).orElse(null);
+        Order order = orderRepository.findOne(orderEvent.getOrderId());
 
         if (validate) {
             // Validate the account number of the event's order belongs to the user
@@ -70,7 +69,7 @@ public class OrderServiceV1 {
 
     public Order getOrder(String orderId, Boolean validate) {
         // Get the order for the event
-        Order order = orderRepository.findById(orderId).orElse(null);
+        Order order = orderRepository.findOne(orderId);
 
         if (validate) {
             try {
@@ -104,7 +103,7 @@ public class OrderServiceV1 {
     }
 
     public boolean validateAccountNumber(String accountNumber) throws Exception {
-        Account[] accounts = oAuth2RestTemplate.getForObject("http://account-service/v1/accounts", Account[].class);
+        Account[] accounts = oAuth2RestTemplate.getForObject("http://localhost:18022/v1/accounts", Account[].class);
 
         // Ensure account number is owned by the authenticated user
         if (accounts != null &&

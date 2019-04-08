@@ -1,7 +1,7 @@
 package demo.shipment;
 
-import org.springframework.data.neo4j.repository.Neo4jRepository;
+import org.springframework.data.neo4j.repository.GraphRepository;
 
-public interface ShipmentRepository extends Neo4jRepository<Shipment, Long> {
+public interface ShipmentRepository extends GraphRepository<Shipment> {
 
 }

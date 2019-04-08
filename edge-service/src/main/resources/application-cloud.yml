@@ -1,8 +1,3 @@
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,prometheus
 zuul:
   ignored-services: '*'
   ignoredPatterns: /**/api/**
@@ -14,3 +9,7 @@ zuul:
     user-service: /user/**
     catalog-service: /catalog/**
     shopping-cart-service: /shoppingcart/**
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://auth.learnmicroservices.org/uaa/user

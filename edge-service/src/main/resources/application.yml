@@ -6,14 +6,15 @@ spring:
   profiles: default
 server:
   port: 18020
+security:
+  ignored: /catalog/**
 ---
 spring:
   profiles: localhost
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://localhost:18027/uaa/user
 zuul:
   ignored-services: "*"
   ignoredPatterns: /**/api/**

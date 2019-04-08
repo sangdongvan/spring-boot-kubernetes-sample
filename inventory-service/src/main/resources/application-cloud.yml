@@ -1,4 +1,4 @@
 spring:
-  data:
-    neo4j:
-      uri: bolt://neo4j
+  neo4j:
+    host: neo4j
+    port: 80

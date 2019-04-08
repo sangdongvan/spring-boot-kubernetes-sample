@@ -4,7 +4,6 @@ import demo.config.DatabaseInitializer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
@@ -30,7 +29,6 @@ public class OrderApplication {
         SpringApplication.run(OrderApplication.class, args);
     }
 
-    @LoadBalanced
     @Bean
     public OAuth2RestTemplate loadBalancedOauth2RestTemplate(
             OAuth2ProtectedResourceDetails resource, OAuth2ClientContext context) {
@@ -38,7 +36,7 @@ public class OrderApplication {
     }
 
     @Bean
-    @Profile("docker")
+    @Profile({"localhost", "cloud"})
     CommandLineRunner commandLineRunner(DatabaseInitializer databaseInitializer) {
         return args -> {
             // Initialize the database for end to end integration testing

@@ -1,7 +1,7 @@
 package demo.account;
 
-import demo.address.Address;
 import demo.creditcard.CreditCard;
+import demo.address.Address;
 import demo.customer.Customer;
 import demo.data.BaseEntity;
 

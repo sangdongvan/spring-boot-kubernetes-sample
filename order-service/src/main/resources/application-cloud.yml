@@ -1,7 +1,8 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://user:pwd@mongo/orders
+      host: mongo
+      port: 80
 security:
   oauth2:
     resource:

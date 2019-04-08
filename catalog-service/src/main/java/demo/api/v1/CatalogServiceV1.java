@@ -27,10 +27,10 @@ public class CatalogServiceV1 {
 
         CatalogInfo activeCatalog = catalogInfoRepository.findCatalogByActive(true);
 
-        catalog = restTemplate.getForObject(String.format("http://inventory-service/api/catalogs/search/findCatalogByCatalogNumber?catalogNumber=%s",
+        catalog = restTemplate.getForObject(String.format("http://localhost:18023/api/catalogs/search/findCatalogByCatalogNumber?catalogNumber=%s",
                 activeCatalog.getCatalogId()), Catalog.class);
 
-        ProductsResource products = restTemplate.getForObject(String.format("http://inventory-service/api/catalogs/%s/products",
+        ProductsResource products = restTemplate.getForObject(String.format("http://localhost:18023/api/catalogs/%s/products",
                 catalog.getId()), ProductsResource.class);
 
         catalog.setProducts(products.getContent().stream().collect(Collectors.toSet()));
@@ -38,7 +38,7 @@ public class CatalogServiceV1 {
     }
 
     public Product getProduct(String productId) {
-        return restTemplate.getForObject(String.format("http://inventory-service/v1/products/%s",
+        return restTemplate.getForObject(String.format("http://localhost:18023/v1/products/%s",
                 productId), Product.class);
     }
 }

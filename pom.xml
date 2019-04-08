@@ -17,6 +17,7 @@
     </parent>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <docker.image.prefix>sangdongvan</docker.image.prefix>
         <docker.plugin.version>0.3.258</docker.plugin.version>

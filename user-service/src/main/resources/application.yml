@@ -4,17 +4,14 @@ spring:
 ---
 spring:
   profiles: default
-  jpa:
-    hibernate:
-      use-new-id-generator-mappings: false
-      ddl-auto: none
 server:
   port: 18027
-  servlet:
-    context-path: /uaa
-management:
-  server:
-    port: 38027
+  context-path: /uaa
+security:
+  user:
+    password: password
+  enable-csrf: false
+  ignored: /resources/**
 ---
 spring:
   profiles: localhost
@@ -22,13 +19,8 @@ spring:
     url: jdbc:mysql://localhost:17023/dev
     username: root
     password: dbpass
-    initialization-mode: always
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-#logging.level.org.springframework.security: DEBUG
+    initialize: true
+logging.level.org.springframework.security: DEBUG
 ---
 spring:
   profiles: test
@@ -36,6 +28,4 @@ spring:
     url: jdbc:mysql://localhost:17023/test
     username: root
     password: dbpass
-  jpa:
-    hibernate:
-      ddl-auto: create
+    initialize: false

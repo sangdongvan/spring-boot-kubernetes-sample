@@ -9,12 +9,12 @@ spring:
 ---
 spring:
   profiles: localhost
-  data:
-    neo4j:
-      uri: bolt://localhost:17021
+  neo4j:
+    host: localhost
+    port: 17021
 ---
 spring:
   profiles: test
-  data:
-    neo4j:
-      uri: bolt://localhost:17021
+  neo4j:
+    host: localhost
+    port: 17021

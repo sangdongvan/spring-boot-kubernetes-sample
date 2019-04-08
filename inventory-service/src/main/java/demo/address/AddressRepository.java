@@ -1,6 +1,6 @@
 package demo.address;
 
-import org.springframework.data.neo4j.repository.Neo4jRepository;
+import org.springframework.data.neo4j.repository.GraphRepository;
 
-public interface AddressRepository extends Neo4jRepository<Address, Long> {
+public interface AddressRepository extends GraphRepository<Address> {
 }

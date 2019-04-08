@@ -83,8 +83,8 @@ public class ShoppingCart {
                         CartEventType.REMOVE_ITEM));
 
         // The CartEvent's type must be either ADD_ITEM or REMOVE_ITEM
-        if (validCartEventTypes.any(cartEventType ->
-                cartEvent.getCartEventType().equals(cartEventType)).block()) {
+        if (validCartEventTypes.exists(cartEventType ->
+                cartEvent.getCartEventType().equals(cartEventType)).get()) {
             // Update the aggregate view of each line item's quantity from the event type
             productMap.put(cartEvent.getProductId(),
                     productMap.getOrDefault(cartEvent.getProductId(), 0) +
