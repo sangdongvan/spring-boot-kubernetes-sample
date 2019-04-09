@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: online-store-web-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: online-store-web-ip
+  labels:
+    app: online-store-web
+spec:
+  backend:
+    serviceName: online-store-web
+    servicePort: 80

@@ -21,12 +21,12 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="account-service" options="" />
-      <module name="catalog-service" options="-parameters" />
+      <module name="catalog-service" options="" />
       <module name="edge-service" options="" />
       <module name="inventory-service" options="" />
       <module name="online-store-web" options="" />
       <module name="order-service" options="" />
-      <module name="payment-service" options="-parameters" />
+      <module name="payment-service" options="" />
       <module name="shopping-cart-service" options="" />
       <module name="user-service" options="" />
     </option>

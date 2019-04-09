@@ -6,6 +6,9 @@ spring:
   profiles: default
 server:
   port: 18022
+management:
+  security:
+    enabled: false
 ---
 spring:
   profiles: localhost
@@ -28,7 +31,9 @@ spring:
     url: jdbc:mysql://localhost:17023/test?useSSL=false
     username: root
     password: dbpass
-    initialize: false
+  jpa:
+    hibernate:
+      ddl-auto: create
 security:
   oauth2:
     resource:

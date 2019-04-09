@@ -9,6 +9,9 @@ server:
 security:
   enable-csrf: false
   ignored: /assets/**
+management:
+  security:
+    enabled: false
 ---
 spring:
   profiles: localhost

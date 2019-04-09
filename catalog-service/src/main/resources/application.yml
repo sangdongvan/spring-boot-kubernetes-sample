@@ -4,10 +4,6 @@ spring:
 ---
 spring:
   profiles: default
-  jpa:
-    hibernate:
-      use-new-id-generator-mappings: false
-      ddl-auto: none
 server:
   port: 18028
 ---
@@ -17,7 +13,7 @@ spring:
     url: jdbc:mysql://localhost:17023/dev?useSSL=false
     username: root
     password: dbpass
-    initialization-mode: always
+    initialize: true
 ---
 spring:
   profiles: test
@@ -25,6 +21,7 @@ spring:
     url: jdbc:mysql://localhost:17023/test?useSSL=false
     username: root
     password: dbpass
+    initialize: false
   jpa:
     hibernate:
       ddl-auto: create

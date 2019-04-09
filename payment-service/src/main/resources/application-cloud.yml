@@ -3,12 +3,6 @@ spring:
     host: redis
     port: 6379
   datasource:
-    url: jdbc:mysql://mysql/dev?useSSL=false
+    url: jdbc:mysql://mysql:3306/dev?useSSL=false
     username: root
     password: dbpass
-    initialization-mode: always
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,prometheus

@@ -5,9 +5,10 @@ metadata:
   labels:
     app: online-store-web
 spec:
+  type: NodePort
   ports:
   - name: http
-    port: 18021
-  type: NodePort
+    port: 80
+    targetPort: 18021
   selector:
     app: online-store-web

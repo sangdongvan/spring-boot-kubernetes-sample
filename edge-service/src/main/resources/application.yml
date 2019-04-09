@@ -8,6 +8,9 @@ server:
   port: 18020
 security:
   ignored: /catalog/**
+management:
+  security:
+    enabled: false
 ---
 spring:
   profiles: localhost

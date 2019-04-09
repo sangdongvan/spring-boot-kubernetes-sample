@@ -1,4 +1,4 @@
-FROM oracle/graalvm-ce:1.0.0-rc14
+FROM openjdk:8-alpine
 VOLUME /tmp
 ARG JAR_FILE
 ADD target/${JAR_FILE} app.jar

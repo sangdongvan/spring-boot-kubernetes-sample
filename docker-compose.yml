@@ -34,7 +34,7 @@ mongo:
 redis:
   image: redis:3.0
   ports:
-   - 6379:6379
+   - 17024:6379
 user-service:
   image: sangdongvan/user-service:0.0.1-SNAPSHOT
   ports:

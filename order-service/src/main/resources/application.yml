@@ -12,6 +12,9 @@ spring:
       write_dates_as_timestamps: true
 server:
   port: 18025
+management:
+  security:
+    enabled: false
 ---
 spring:
   profiles: localhost

@@ -24,7 +24,7 @@ public class AccountServiceV1 {
 
     public List<Account> getUserAccounts() {
         List<Account> account = null;
-        User user = oAuth2RestTemplate.getForObject("http://localhost:18027/uaa/v1/me", User.class);
+        User user = oAuth2RestTemplate.getForObject("http://user-service/uaa/v1/me", User.class);
         if (user != null) {
             account = accountRepository.findAccountsByUserId(user.getUsername());
         }

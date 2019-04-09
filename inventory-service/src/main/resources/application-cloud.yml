@@ -1,4 +1,4 @@
 spring:
   neo4j:
     host: neo4j
-    port: 80
+    port: 7474

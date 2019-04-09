@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: online-store-web
-          image: sangdongvan/istio-sample-online-store-web:0.0.11-SNAPSHOT
+          image: sangdongvan/istio-sample-online-store-web:0.1.3-SNAPSHOT
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 18021
@@ -33,26 +33,22 @@ spec:
               protocol: TCP
           env:
             - name: JAVA_OPTIONS
-              value: -Xms128m -Xmx256m -Djava.net.preferIPv4Stack=true -Djava.security.egd=file:///dev/./urandom
+              value: -Xms256m -Xmx512m -Djava.net.preferIPv4Stack=true -Djava.security.egd=file:///dev/./urandom
             - name: SPRING_PROFILES_ACTIVE
               value: default,cloud
-#          livenessProbe:
-#            exec:
-#              command:
-#                - wget
-#                - --quiet
-#                - http://localhost:18021/actuator/health
-#            initialDelaySeconds: 30
-#            periodSeconds: 5
-#            timeoutSeconds: 1
-#          readinessProbe:
-#            exec:
-#              command:
-#                - wget
-#                - --quiet
-#                - http://localhost:18021/actuator/health
-#            initialDelaySeconds: 20
-#            periodSeconds: 5
-#            timeoutSeconds: 1
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 18021
+            initialDelaySeconds: 120
+            periodSeconds: 5
+            timeoutSeconds: 1
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 18021
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            timeoutSeconds: 1
           securityContext:
             privileged: false

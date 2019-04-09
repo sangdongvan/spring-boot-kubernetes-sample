@@ -12,6 +12,10 @@ security:
     password: password
   enable-csrf: false
   ignored: /resources/**
+management:
+  security:
+    enabled: false
+  port: 38027
 ---
 spring:
   profiles: localhost

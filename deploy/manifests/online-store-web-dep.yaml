@@ -25,13 +25,13 @@ spec:
           httpGet:
             path: /
             port: 8787
-          initialDelaySeconds: 300
+          initialDelaySeconds: 1200
           periodSeconds: 3
         readinessProbe:
           httpGet:
             path: /
             port: 8787
-          initialDelaySeconds: 30
+          initialDelaySeconds: 120
           periodSeconds: 3
       nodeSelector:
         beta.kubernetes.io/os: linux

@@ -30,7 +30,7 @@ public class OrderServiceV1 {
     }
 
     public Order createOrder(List<LineItem> lineItems) {
-        Account[] accounts = oAuth2RestTemplate.getForObject("http://localhost:18022/v1/accounts", Account[].class);
+        Account[] accounts = oAuth2RestTemplate.getForObject("http://account-service/v1/accounts", Account[].class);
 
         Account defaultAccount = Arrays.asList(accounts).stream()
                 .filter(Account::getDefaultAccount)
@@ -103,7 +103,7 @@ public class OrderServiceV1 {
     }
 
     public boolean validateAccountNumber(String accountNumber) throws Exception {
-        Account[] accounts = oAuth2RestTemplate.getForObject("http://localhost:18022/v1/accounts", Account[].class);
+        Account[] accounts = oAuth2RestTemplate.getForObject("http://account-service/v1/accounts", Account[].class);
 
         // Ensure account number is owned by the authenticated user
         if (accounts != null &&
