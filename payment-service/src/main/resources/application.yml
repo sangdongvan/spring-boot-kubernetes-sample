@@ -8,9 +8,6 @@ spring:
     database: mysql
 server:
   port: 18026
-management:
-  security:
-    enabled: false
 ---
 spring:
   profiles: localhost

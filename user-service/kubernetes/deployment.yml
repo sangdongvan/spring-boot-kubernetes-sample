@@ -19,14 +19,11 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: sangdongvan/istio-sample-user-service:0.1.3-SNAPSHOT
+          image: sangdongvan/istio-sample-user-service:0.1.4-SNAPSHOT
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 18027
               name: http
-              protocol: TCP
-            - containerPort: 38027
-              name: http-management
               protocol: TCP
             - containerPort: 8778
               name: jolokia
@@ -41,15 +38,15 @@ spec:
               value: default,cloud
           livenessProbe:
             httpGet:
-              path: /health
-              port: 38027
+              path: /uaa/health
+              port: 18027
             initialDelaySeconds: 120
             periodSeconds: 5
             timeoutSeconds: 1
           readinessProbe:
             httpGet:
-              path: /health
-              port: 38027
+              path: /uaa/health
+              port: 18027
             initialDelaySeconds: 60
             periodSeconds: 5
             timeoutSeconds: 1
