@@ -23,7 +23,7 @@ public class OnlineStoreApplication extends WebSecurityConfigurerAdapter {
         http.antMatcher("/**")
                 .authorizeRequests()
                 .antMatchers("/index.html", "/login", "/", "/api/catalog/**",
-                        "/user", "/assets/**").permitAll()
+                        "/user", "/assets/**", "/favicon.ico").permitAll()
                 .anyRequest().authenticated().and().csrf().disable();
     }
 }

@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: account-service
-          image: sangdongvan/istio-sample-account-service:0.1.3-SNAPSHOT
+          image: sangdongvan/istio-sample-account-service:0.1.5-SNAPSHOT
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 18022

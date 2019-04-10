@@ -6,7 +6,7 @@ zuul:
       url: http://edge-service
     auth-service:
       path: /user/**
-      url: http://auth-service/uaa/user
+      url: http://user-service/uaa/user
 security:
   oauth2:
     resource:
