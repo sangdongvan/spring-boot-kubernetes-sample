@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: edge-service
-          image: sangdongvan/istio-sample-edge-service:0.1.5-SNAPSHOT
+          image: sangdongvan/istio-sample-edge-service:0.1.6-SNAPSHOT
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 18020

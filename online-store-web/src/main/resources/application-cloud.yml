@@ -10,9 +10,9 @@ zuul:
 security:
   oauth2:
     resource:
-      userInfoUri: http://auth.learnmicroservices.org/uaa/user
+      userInfoUri: http://user-service/uaa/user
     client:
-      accessTokenUri: http://auth.learnmicroservices.org/uaa/oauth/token
+      accessTokenUri: http://user-service/uaa/oauth/token
       userAuthorizationUri: http://auth.learnmicroservices.org/uaa/oauth/authorize
       clientId: acme
       clientSecret: acmesecret

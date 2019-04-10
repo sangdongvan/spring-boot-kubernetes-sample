@@ -27,10 +27,7 @@ security:
     resource:
       userInfoUri: http://localhost:18027/uaa/user
     client:
-      accessTokenUri: http://localhost:18027/uaa/oauth/token
-      userAuthorizationUri: http://localhost:18027/uaa/oauth/authorize
       clientId: acme
-      clientSecret: acmesecret
 ---
 spring:
   profiles: test
@@ -47,7 +44,4 @@ security:
     resource:
       userInfoUri: http://localhost:18027/uaa/user
     client:
-      accessTokenUri: http://localhost:18027/uaa/oauth/token
-      userAuthorizationUri: http://localhost:18027/uaa/oauth/authorize
       clientId: acme
-      clientSecret: acmesecret

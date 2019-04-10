@@ -23,7 +23,6 @@ security:
       userInfoUri: http://localhost:18027/uaa/user
     client:
       clientId: acme
-      access-token-uri: http://localhost:18027
 ---
 spring:
   profiles: test
@@ -40,4 +39,3 @@ security:
       userInfoUri: http://localhost:18027/uaa/user
     client:
       clientId: acme
-      access-token-uri: http://localhost:18027

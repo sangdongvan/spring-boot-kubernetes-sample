@@ -8,7 +8,6 @@ spring:
 security:
   oauth2:
     resource:
-      userInfoUri: http://auth.learnmicroservices.org/uaa/user
+      userInfoUri: http://user-service/uaa/user
     client:
-      client-id: acme
-      access-token-uri: http://auth.learnmicroservices.org
+      clientId: acme
