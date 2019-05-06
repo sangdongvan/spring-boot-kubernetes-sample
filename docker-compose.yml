@@ -1,127 +1,129 @@
-config-service:
-  image: sangdongvan/config-service:0.0.1-SNAPSHOT
-  environment:
-   - SPRING_PROFILES_ACTIVE=docker
-   - DOCKER_IP=$DOCKER_IP
-  ports:
-   - 8888:8888
-hystrix-dashboard:
-  image: sangdongvan/hystrix-dashboard:0.0.1-SNAPSHOT
-  environment:
-   - SPRING_PROFILES_ACTIVE=docker
-   - DOCKER_IP=$DOCKER_IP
-  ports:
-   - 6161:6161
-mysql:
-  image: mysql:5.7
-  ports:
-   - 17023:3306
-  environment:
-   - MYSQL_ROOT_PASSWORD=dbpass
-  entrypoint:
-    sh -c "echo 'CREATE DATABASE IF NOT EXISTS dev; CREATE DATABASE IF NOT EXISTS test;' > /docker-entrypoint-initdb.d/init.sql; /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
-neo4j:
-  image: neo4j:2.3
-  ports:
-   - 17021:7474
-   - 17020:7687
-  environment:
-   - NEO4J_AUTH=none
-mongo:
-  image: mongo:3.3
-  ports:
-   - 17022:27017
-redis:
-  image: redis:3.0
-  ports:
-   - 17024:6379
-user-service:
-  image: sangdongvan/user-service:0.0.1-SNAPSHOT
-  ports:
-   - 18027:18027
-  links:
-   - mysql
-   - discovery-service
-   - config-service
-  environment:
-   - SPRING_PROFILES_ACTIVE=docker
-   - DOCKER_IP=$DOCKER_IP
-discovery-service:
-  image: sangdongvan/discovery-service:0.0.1-SNAPSHOT
-  ports:
-   - 8761:8761
-  environment:
-   - SPRING_PROFILES_ACTIVE=docker
-   - DOCKER_IP=$DOCKER_IP
-edge-service:
-  image: sangdongvan/edge-service:0.0.1-SNAPSHOT
-  ports:
-   - 9999:9999
-  links:
-   - user-service
-   - discovery-service
-   - config-service
-  environment:
-   - SPRING_PROFILES_ACTIVE=docker
-   - DOCKER_IP=$DOCKER_IP
-account-service:
-  image: sangdongvan/account-service:0.0.1-SNAPSHOT
-  links:
-   - user-service
-   - discovery-service
-   - config-service
-   - mysql
-  environment:
-   - SPRING_PROFILES_ACTIVE=docker
-   - DOCKER_IP=$DOCKER_IP
-inventory-service:
-  image: sangdongvan/inventory-service:0.0.1-SNAPSHOT
-  links:
-   - neo4j
-   - discovery-service
-   - config-service
-  environment:
-   - SPRING_PROFILES_ACTIVE=docker
-   - DOCKER_IP=$DOCKER_IP
-order-service:
-  image: sangdongvan/order-service:0.0.1-SNAPSHOT
-  links:
-   - mongo
-   - discovery-service
-   - config-service
-   - user-service
-  environment:
-   - SPRING_PROFILES_ACTIVE=docker
-   - DOCKER_IP=$DOCKER_IP
-catalog-service:
-  image: sangdongvan/catalog-service:0.0.1-SNAPSHOT
-  links:
-   - redis
-   - mysql
-   - discovery-service
-   - config-service
-  environment:
-   - SPRING_PROFILES_ACTIVE=docker
-   - DOCKER_IP=$DOCKER_IP
-shopping-cart-service:
-  image: sangdongvan/shopping-cart-service:0.0.1-SNAPSHOT
-  links:
-   - mysql
-   - discovery-service
-   - config-service
-   - user-service
-  environment:
-   - SPRING_PROFILES_ACTIVE=docker
-   - DOCKER_IP=$DOCKER_IP
-online-store-web:
-  image: sangdongvan/online-store-web:0.0.1-SNAPSHOT
-  ports:
-   - 8787:8787
-  links:
-   - discovery-service
-   - config-service
-   - user-service
-   - edge-service
-  environment:
-   - SPRING_PROFILES_ACTIVE=docker
-   - DOCKER_IP=$DOCKER_IP
+version: '2'
+  services:
+    config-service:
+      image: sangdongvan/config-service:0.0.6-SNAPSHOT
+      environment:
+       - SPRING_PROFILES_ACTIVE=docker
+       - DOCKER_IP=$DOCKER_IP
+      ports:
+       - 8888:8888
+    hystrix-dashboard:
+      image: sangdongvan/hystrix-dashboard:0.0.6-SNAPSHOT
+      environment:
+       - SPRING_PROFILES_ACTIVE=docker
+       - DOCKER_IP=$DOCKER_IP
+      ports:
+       - 6161:6161
+    mysql:
+      image: mysql:5.7
+      ports:
+       - 17023:3306
+      environment:
+       - MYSQL_ROOT_PASSWORD=dbpass
+      entrypoint:
+        sh -c "echo 'CREATE DATABASE IF NOT EXISTS dev; CREATE DATABASE IF NOT EXISTS test;' > /docker-entrypoint-initdb.d/init.sql; /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
+    neo4j:
+      image: neo4j:2.3
+      ports:
+       - 17021:7474
+       - 17020:7687
+      environment:
+       - NEO4J_AUTH=none
+    mongo:
+      image: mongo:3.3
+      ports:
+       - 17022:27017
+    redis:
+      image: redis:3.0
+      ports:
+       - 17024:6379
+    user-service:
+      image: sangdongvan/user-service:0.0.6-SNAPSHOT
+      ports:
+       - 18027:18027
+      links:
+       - mysql
+       - discovery-service
+       - config-service
+      environment:
+       - SPRING_PROFILES_ACTIVE=docker
+       - DOCKER_IP=$DOCKER_IP
+    discovery-service:
+      image: sangdongvan/discovery-service:0.0.6-SNAPSHOT
+      ports:
+       - 8761:8761
+      environment:
+       - SPRING_PROFILES_ACTIVE=docker
+       - DOCKER_IP=$DOCKER_IP
+    edge-service:
+      image: sangdongvan/edge-service:0.0.6-SNAPSHOT
+      ports:
+       - 9999:9999
+      links:
+       - user-service
+       - discovery-service
+       - config-service
+      environment:
+       - SPRING_PROFILES_ACTIVE=docker
+       - DOCKER_IP=$DOCKER_IP
+    account-service:
+      image: sangdongvan/account-service:0.0.6-SNAPSHOT
+      links:
+       - user-service
+       - discovery-service
+       - config-service
+       - mysql
+      environment:
+       - SPRING_PROFILES_ACTIVE=docker
+       - DOCKER_IP=$DOCKER_IP
+    inventory-service:
+      image: sangdongvan/inventory-service:0.0.6-SNAPSHOT
+      links:
+       - neo4j
+       - discovery-service
+       - config-service
+      environment:
+       - SPRING_PROFILES_ACTIVE=docker
+       - DOCKER_IP=$DOCKER_IP
+    order-service:
+      image: sangdongvan/order-service:0.0.6-SNAPSHOT
+      links:
+       - mongo
+       - discovery-service
+       - config-service
+       - user-service
+      environment:
+       - SPRING_PROFILES_ACTIVE=docker
+       - DOCKER_IP=$DOCKER_IP
+    catalog-service:
+      image: sangdongvan/catalog-service:0.0.6-SNAPSHOT
+      links:
+       - redis
+       - mysql
+       - discovery-service
+       - config-service
+      environment:
+       - SPRING_PROFILES_ACTIVE=docker
+       - DOCKER_IP=$DOCKER_IP
+    shopping-cart-service:
+      image: sangdongvan/shopping-cart-service:0.0.6-SNAPSHOT
+      links:
+       - mysql
+       - discovery-service
+       - config-service
+       - user-service
+      environment:
+       - SPRING_PROFILES_ACTIVE=docker
+       - DOCKER_IP=$DOCKER_IP
+    online-store-web:
+      image: sangdongvan/online-store-web:0.0.6-SNAPSHOT
+      ports:
+       - 8787:8787
+      links:
+       - discovery-service
+       - config-service
+       - user-service
+       - edge-service
+      environment:
+       - SPRING_PROFILES_ACTIVE=docker
+       - DOCKER_IP=$DOCKER_IP

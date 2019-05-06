@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+kubectl create namespace tutorial
+
+# Create Gateway
+kubectl apply -f scripts/manifests/istio-components/
+
+# Deploy Data Backed Services
+kubectl apply -f scripts/manifests/data-backed-services/ -n tutorial
+
 kubectl apply -f user-service/kubernetes/deployment.yml -n tutorial
 kubectl apply -f user-service/kubernetes/service.yml -n tutorial
 kubectl apply -f <(istioctl kube-inject -f online-store-web/kubernetes/deployment.yml) -n tutorial
