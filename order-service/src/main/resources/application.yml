@@ -2,6 +2,8 @@ spring:
   profiles:
     active: default,localhost
 ---
+server:
+  port: 0
 spring:
   profiles: default
   mvc:
@@ -10,8 +12,12 @@ spring:
     date-format: "YYYY-MM-dd"
     serialization:
       write_dates_as_timestamps: true
-server:
-  port: 18025
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        prefer-ip-address: true
 management:
   security:
     enabled: false
@@ -25,7 +31,23 @@ spring:
 security:
   oauth2:
     resource:
-      userInfoUri: http://localhost:18027/uaa/user
+      userInfoUri: http://auth.local:8033/uaa/user
+    client:
+      client-id: acme
+---
+spring:
+  profiles: docker-compose
+  cloud:
+    consul:
+      host: consul
+  data:
+    mongodb:
+      host: mongo
+      port: 27017
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://auth.local:8033/uaa/user
     client:
       client-id: acme
 ---

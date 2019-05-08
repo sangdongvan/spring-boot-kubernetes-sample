@@ -2,10 +2,20 @@ spring:
   profiles:
     active: default,localhost
 ---
+server:
+  port: 8031
 spring:
   profiles: default
-server:
-  port: 18021
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        prefer-ip-address: true
+zuul:
+  ignored-services: '*'
+  routes:
+    edge-service: /api/**
 security:
   enable-csrf: false
   ignored: /assets/**
@@ -16,20 +26,44 @@ management:
 spring:
   profiles: localhost
 zuul:
-  ignored-services: '*'
   routes:
     edge-service:
       path: /api/**
-      url: http://localhost:18020
+      url: http://localhost:8032
     auth-service:
       path: /user/**
-      url: http://localhost:18027/uaa/user
+      url: http://auth.local:8033/uaa/user
 security:
   oauth2:
     resource:
-      userInfoUri: http://localhost:18027/uaa/user
+      userInfoUri: http://auth.local:8033/uaa/user
     client:
-      accessTokenUri: http://localhost:18027/uaa/oauth/token
-      userAuthorizationUri: http://localhost:18027/uaa/oauth/authorize
+      accessTokenUri: http://auth.local:8033/uaa/oauth/token
+      userAuthorizationUri: http://auth.local:8033/uaa/oauth/authorize
+      clientId: acme
+      clientSecret: acmesecret
+---
+server:
+  port: 80
+spring:
+  profiles: docker-compose
+  cloud:
+    consul:
+      host: 172.33.1.2
+zuul:
+  routes:
+    edge-service:
+      path: /api/**
+      url: http://172.33.1.1:8032
+    auth-service:
+      path: /user/**
+      url: http://172.33.1.1:8033/uaa/user
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://172.33.1.1:8033/uaa/user
+    client:
+      accessTokenUri: http://172.16.126.54:8033/uaa/oauth/token
+      userAuthorizationUri: http://172.16.126.54:8033/uaa/oauth/authorize
       clientId: acme
       clientSecret: acmesecret

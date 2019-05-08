@@ -1,0 +1,169 @@
+version: '2'
+
+services:
+
+  consul:
+    image: consul:1.4.4
+    ports:
+      - "8500:8500"
+      # - "${DOCKER_GATEWAY}53:8600/udp"
+      - "8400:8400"
+      - "8502:8502"
+    networks:
+      default:
+        ipv4_address: 172.33.1.2
+    environment:
+      - SERVICE_IGNORE=1
+      - DNS_RESOLVES=consul
+      - DNS_PORT=8600
+      - CONSUL_DATA_DIR=/consul/data
+      - CONSUL_CONFIG_DIR=/consul/config
+    entrypoint:
+      - "docker-entrypoint.sh"
+    command: ["agent", "-dev", "-ui", "-grpc-port", "8502"]
+    volumes:
+      - ./consul-config:/consul/config
+
+  registrator:
+    image: gliderlabs/registrator:latest
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    command: ["-ip=${HOST_IP}", "-retry-attempts=-1", "consul://consul:8500"]
+
+  mongo:
+    image: mongo:3.3
+    ports:
+      - 17022:27017
+
+  mysql:
+    image: mysql:5.7
+    ports:
+      - 17023:3306
+    networks:
+      default:
+        aliases:
+          - mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=dbpass
+    entrypoint:
+      sh -c "echo 'CREATE DATABASE IF NOT EXISTS dev; CREATE DATABASE IF NOT EXISTS test;' > /docker-entrypoint-initdb.d/init.sql; /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
+    labels:
+      - SERVICE_IGNORE=1
+
+  redis:
+    image: redis:3.0
+    ports:
+      - 17024:6379
+
+  neo4j:
+    image: neo4j:2.3
+    ports:
+      - 17021:7474
+      - 17020:7687
+    environment:
+      - NEO4J_AUTH=none
+    labels:
+      - SERVICE_7474_NAME=neo4j
+
+  online-store-web:
+    image: sangdongvan/istio-sample-online-store-web:0.1.6-SNAPSHOT
+    ports:
+      - 8031:80
+    extra_hosts:
+      - "auth.local:${HOST_IP}"
+    environment:
+      - JAVA_OPTS="-Xmx256"
+      - SPRING_PROFILES_ACTIVE=default,docker-compose
+    labels:
+      - SERVICE_IGNORE=1
+
+  edge-service:
+    image: sangdongvan/istio-sample-edge-service:0.1.6-SNAPSHOT
+    ports:
+      - 8032:80
+    extra_hosts:
+      - "auth.local:${HOST_IP}"
+    environment:
+      - JAVA_OPTS="-Xmx256"
+      - SPRING_PROFILES_ACTIVE=default,docker-compose
+    labels:
+      - SERVICE_IGNORE=1
+
+  user-service:
+    image: sangdongvan/istio-sample-user-service:0.1.6-SNAPSHOT
+    ports:
+      - 8033:80
+    environment:
+      - JAVA_OPTS="-Xmx256"
+      - SPRING_PROFILES_ACTIVE=default,docker-compose
+    labels:
+      - SERVICE_IGNORE=1
+
+  inventory-service:
+    image: sangdongvan/istio-sample-inventory-service:0.1.6-SNAPSHOT
+    ports:
+      - 0:80
+    extra_hosts:
+      - "auth.local:${HOST_IP}"
+    environment:
+      - JAVA_OPTS="-Xmx256"
+      - SPRING_PROFILES_ACTIVE=default,docker-compose
+    labels:
+      - SERVICE_NAME=inventory-service
+
+  catalog-service:
+    image: sangdongvan/istio-sample-catalog-service:0.1.6-SNAPSHOT
+    ports:
+      - 0:80
+    extra_hosts:
+      - "auth.local:${HOST_IP}"
+    environment:
+      - JAVA_OPTS="-Xmx256"
+      - SPRING_PROFILES_ACTIVE=default,docker-compose
+    labels:
+      - SERVICE_IGNORE=1
+
+  order-service:
+    image: sangdongvan/istio-sample-order-service:0.1.6-SNAPSHOT
+    ports:
+      - 0:80
+    extra_hosts:
+      - "auth.local:${HOST_IP}"
+    environment:
+      - JAVA_OPTS="-Xmx256"
+      - SPRING_PROFILES_ACTIVE=default,cloud
+    labels:
+      - SERVICE_IGNORE=1
+
+  shopping-cart-service:
+    image: sangdongvan/istio-sample-shopping-cart-service:0.1.6-SNAPSHOT
+    ports:
+      - 0:80
+    extra_hosts:
+      - "auth.local:${HOST_IP}"
+    environment:
+      - JAVA_OPTS="-Xmx256"
+      - SPRING_PROFILES_ACTIVE=default,docker-compose
+    labels:
+      - SERVICE_IGNORE=1
+
+  account-service:
+    image: sangdongvan/istio-sample-account-service:0.1.6-SNAPSHOT
+    ports:
+      - 0:80
+    extra_hosts:
+      - "auth.local:${HOST_IP}"
+    environment:
+      - JAVA_OPTS="-Xmx256"
+      - SPRING_PROFILES_ACTIVE=default,cloud
+    labels:
+      - SERVICE_IGNORE=1
+
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.33.0.0/16
+          ip_range: 172.33.1.0/24
+          gateway: 172.33.1.1

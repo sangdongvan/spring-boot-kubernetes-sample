@@ -2,12 +2,12 @@ spring:
   profiles:
     active: default,localhost
 ---
+server:
+  port: 0
 spring:
   profiles: default
   datasource:
     database: mysql
-server:
-  port: 18026
 ---
 spring:
   profiles: localhost

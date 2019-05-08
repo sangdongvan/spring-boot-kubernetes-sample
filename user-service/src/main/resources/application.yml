@@ -2,11 +2,18 @@ spring:
   profiles:
     active: default,localhost
 ---
+server:
+  port: 8033
+  contextPath: /uaa
 spring:
   profiles: default
-server:
-  port: 18027
-  contextPath: /uaa
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        prefer-ip-address: true
+        health-check-path: ${server.contextPath}/health
 security:
   user:
     password: password
@@ -24,6 +31,19 @@ spring:
     password: dbpass
     initialize: true
 logging.level.org.springframework.security: DEBUG
+---
+server:
+  port: 80
+spring:
+  profiles: docker-compose
+  cloud:
+    consul:
+      host: consul
+  datasource:
+    url: jdbc:mysql://mysql:3306/dev?useSSL=false
+    username: root
+    password: dbpass
+    initialize: true
 ---
 spring:
   profiles: test

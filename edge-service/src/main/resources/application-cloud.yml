@@ -1,28 +1,9 @@
-zuul:
-  ignored-services: '*'
-  ignoredPatterns: /**/api/**
-  routes:
-    account-service:
-      path: /account/**
-      url: http://account-service
-    payment-service:
-      path: /payment/**
-      url: http://payment-service
-    inventory-service:
-      path: /inventory/**
-      url: http://inventory-service
-    order-service:
-      path: /order/**
-      url: http://order-service
-    user-service:
-      path: /user/**
-      url: http://user-service
-    catalog-service:
-      path: /catalog/**
-      url: http://catalog-service
-    shopping-cart-service:
-      path: /shoppingcart/**
-      url: http://shopping-cart-service
+server:
+  port: 80
+spring:
+  cloud:
+    consul:
+      host: consul
 security:
   oauth2:
     resource:

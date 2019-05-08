@@ -44,21 +44,21 @@ This reference application uses the following mixture of databases.
 
 ### Service Ports Map
 
-- 18020 edge-service
-- 18021 online-store-web
-- 18022 account-service
-- 18023 inventory-service
-- 18024 shopping-cart-service
-- 18025 order-service
-- 18026 payment-service
-- 18027 user-service
-- 18028 catalog-service
+- 8031 online-store-web
+- 8032 edge-service
+- 8033 user-service
+- random-port account-service
+- random-port inventory-service
+- random-port shopping-cart-service
+- random-port order-service
+- random-port payment-service
+- random-port catalog-service
 
 ### Integration Testing
 
 If you would like to use Docker for integration testing, a `docker-compose.yml` file has been provided in the root directory. To build all the images, first make sure that you have Docker installed and available in your command line tool. With Docker and Docker Compose installed, execute the provided `run.sh` script. This script will build each container and start each of the services and database dependencies. When all the services have started up. Verify that the services are registered with Eureka at `http://$DOCKER_IP:8761`.
 
-If everything has loaded correctly, navigate to the online store at `http://DOCKER_IP:8787/`. Click `Login`. You'll be navigated to the authorization server's gateway at `http://DOCKER_IP:18027/uaa/login`. The username is `user` and the password is `password`. You'll be authenticated and asked to approve token grant to the online web store. After accepting the grant, you'll be redirected to the online store application where you'll be able to access protected resources from the edge service.
+If everything has loaded correctly, navigate to the online store at `http://DOCKER_IP:8787/`. Click `Login`. You'll be navigated to the authorization server's gateway at `http://DOCKER_IP:8033/uaa/login`. The username is `user` and the password is `password`. You'll be authenticated and asked to approve token grant to the online web store. After accepting the grant, you'll be redirected to the online store application where you'll be able to access protected resources from the edge service.
 
 ## License
 

@@ -3,6 +3,8 @@ package demo;
 import demo.order.Order;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -30,17 +32,20 @@ import org.springframework.web.client.RestTemplate;
 @EnableResourceServer
 @EnableOAuth2Client
 @EnableHystrix
+@EnableDiscoveryClient
 public class ShoppingCartApplication {
     public static void main(String[] args) {
         SpringApplication.run(ShoppingCartApplication.class, args);
     }
 
+    @LoadBalanced
     @Bean
     public OAuth2RestTemplate loadBalancedOauth2RestTemplate(
             OAuth2ProtectedResourceDetails resource, OAuth2ClientContext context) {
         return new OAuth2RestTemplate(resource, context);
     }
 
+    @LoadBalanced
     @Bean(name = "normalRestTemplate")
     public RestTemplate loadBalancedRestTemplate() {
         return new RestTemplate();

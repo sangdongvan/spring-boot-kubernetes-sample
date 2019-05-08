@@ -10,6 +10,7 @@ import demo.user.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
@@ -45,8 +46,8 @@ public class ShoppingCartServiceV1 {
 
     @Autowired
     public ShoppingCartServiceV1(CartEventRepository cartEventRepository,
-                                 OAuth2RestTemplate oAuth2RestTemplate,
-                                 RestTemplate normalRestTemplate) {
+                                 @LoadBalanced OAuth2RestTemplate oAuth2RestTemplate,
+                                 @LoadBalanced RestTemplate normalRestTemplate) {
         this.cartEventRepository = cartEventRepository;
         this.oAuth2RestTemplate = oAuth2RestTemplate;
         this.restTemplate = normalRestTemplate;

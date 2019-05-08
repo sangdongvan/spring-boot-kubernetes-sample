@@ -4,6 +4,7 @@ import demo.account.Account;
 import demo.address.AddressType;
 import demo.order.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -23,7 +24,7 @@ public class OrderServiceV1 {
     @Autowired
     public OrderServiceV1(OrderRepository orderRepository,
                           OrderEventRepository orderEventRepository,
-                          OAuth2RestTemplate oAuth2RestTemplate) {
+                          @LoadBalanced OAuth2RestTemplate oAuth2RestTemplate) {
         this.orderRepository = orderRepository;
         this.orderEventRepository = orderEventRepository;
         this.oAuth2RestTemplate = oAuth2RestTemplate;

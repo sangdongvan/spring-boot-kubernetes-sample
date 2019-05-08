@@ -1,9 +1,9 @@
 spring:
   profiles:
     active: default,localhost
-server:
-  port: 18023
 ---
+server:
+  port: 0
 spring:
   profiles: default
 ---
@@ -12,6 +12,14 @@ spring:
   neo4j:
     host: localhost
     port: 17021
+---
+server:
+  port: 80
+spring:
+  profiles: docker-compose
+  neo4j:
+    host: neo4j
+    port: 7474
 ---
 spring:
   profiles: test

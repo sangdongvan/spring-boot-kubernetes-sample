@@ -5,6 +5,7 @@ import demo.catalog.CatalogInfo;
 import demo.catalog.CatalogInfoRepository;
 import demo.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,7 +18,7 @@ public class CatalogServiceV1 {
 
     @Autowired
     public CatalogServiceV1(CatalogInfoRepository catalogInfoRepository,
-                            RestTemplate restTemplate) {
+                            @LoadBalanced RestTemplate restTemplate) {
         this.catalogInfoRepository = catalogInfoRepository;
         this.restTemplate = restTemplate;
     }

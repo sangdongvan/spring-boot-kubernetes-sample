@@ -1,12 +1,9 @@
-zuul:
-  ignored-services: '*'
-  routes:
-    edge-service:
-      path: /api/**
-      url: http://edge-service
-    auth-service:
-      path: /user/**
-      url: http://user-service/uaa/user
+server:
+  port: 80
+spring:
+  cloud:
+    consul:
+      host: consul
 security:
   oauth2:
     resource:

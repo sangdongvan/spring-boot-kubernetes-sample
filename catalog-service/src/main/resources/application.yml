@@ -2,15 +2,34 @@ spring:
   profiles:
     active: default,localhost
 ---
+server:
+  port: 0
 spring:
   profiles: default
-server:
-  port: 18028
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        prefer-ip-address: true
 ---
 spring:
   profiles: localhost
   datasource:
     url: jdbc:mysql://localhost:17023/dev?useSSL=false
+    username: root
+    password: dbpass
+    initialize: true
+---
+server:
+  port: 80
+spring:
+  profiles: docker-compose
+  cloud:
+    consul:
+      host: 172.33.1.2
+  datasource:
+    url: jdbc:mysql://mysql:3306/dev?useSSL=false
     username: root
     password: dbpass
     initialize: true
