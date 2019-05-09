@@ -27,7 +27,7 @@ spring:
   profiles: docker-compose
   cloud:
     consul:
-      host: 172.33.1.2
+      host: consul
   datasource:
     url: jdbc:mysql://mysql:3306/dev?useSSL=false
     username: root

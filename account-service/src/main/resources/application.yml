@@ -34,6 +34,9 @@ server:
   port: 80
 spring:
   profiles: docker-compose
+  cloud:
+    consul:
+      host: consul
   datasource:
     url: jdbc:mysql://mysql:3306/dev?useSSL=false
     username: root
@@ -58,6 +61,6 @@ spring:
 security:
   oauth2:
     resource:
-      userInfoUri: http://user-service/uaa/user
+      userInfoUri: http://auth.local:8033/uaa/user
     client:
       clientId: acme

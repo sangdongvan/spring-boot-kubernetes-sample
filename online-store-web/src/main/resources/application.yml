@@ -32,7 +32,7 @@ zuul:
       url: http://localhost:8032
     auth-service:
       path: /user/**
-      url: http://auth.local:8033/uaa/user
+      url: http://localhost:8033/uaa/user
 security:
   oauth2:
     resource:
@@ -49,7 +49,7 @@ spring:
   profiles: docker-compose
   cloud:
     consul:
-      host: 172.33.1.2
+      host: consul
 zuul:
   routes:
     edge-service:
@@ -61,9 +61,9 @@ zuul:
 security:
   oauth2:
     resource:
-      userInfoUri: http://172.33.1.1:8033/uaa/user
+      userInfoUri: http://auth.local:8033/uaa/user
     client:
-      accessTokenUri: http://172.16.126.54:8033/uaa/oauth/token
-      userAuthorizationUri: http://172.16.126.54:8033/uaa/oauth/authorize
+      accessTokenUri: http://auth.local:8033/uaa/oauth/token
+      userAuthorizationUri: http://auth.local:8033/uaa/oauth/authorize
       clientId: acme
       clientSecret: acmesecret
