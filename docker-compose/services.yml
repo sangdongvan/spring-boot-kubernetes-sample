@@ -82,10 +82,31 @@ services:
     labels:
       - SERVICE_IGNORE=1
 
+  # The zipkin process services the UI, and also exposes a POST endpoint that
+  # instrumentation can send trace data to. Scribe is enabled by default.
+  zipkin:
+    image: openzipkin/zipkin
+    # Environment settings are defined here https://github.com/openzipkin/zipkin/tree/1.19.0/zipkin-server#environment-variables
+    environment:
+      - STORAGE_TYPE=mem
+    ports:
+      # Port used for the Zipkin UI and HTTP Api
+      - 9411:9411
+    networks:
+      default:
+        aliases:
+          - zipkin
+    labels:
+      - SERVICE_IGNORE=1
+
   online-store-web:
     image: sangdongvan/istio-sample-online-store-web:0.1.6-SNAPSHOT
     ports:
       - 8031:80
+    networks:
+      default:
+        aliases:
+          - neo4j
     extra_hosts:
       - "auth.local:172.33.1.1"
     environment:
@@ -111,7 +132,7 @@ services:
     ports:
       - 8033:80
     environment:
-      - JAVA_OPTS="-Xmx256"
+      - JAVA_OPTS="-Xmx512"
       - SPRING_PROFILES_ACTIVE=default,docker-compose
     labels:
       - SERVICE_IGNORE=1

@@ -50,6 +50,8 @@ spring:
   cloud:
     consul:
       host: consul
+  zipkin:
+    base-url: http://zipkin:9411/
 zuul:
   routes:
     edge-service:

@@ -19,6 +19,23 @@ spring:
     username: root
     password: dbpass
 ---
+server:
+  port: 80
+spring:
+  profiles: docker-compose
+  cloud:
+    consul:
+      host: consul
+  zipkin:
+    base-url: http://zipkin:9411/
+  redis:
+    host: redis
+    port: 6379
+  datasource:
+    url: jdbc:mysql://mysql:3306/dev?useSSL=false
+    username: root
+    password: dbpass
+---
 spring:
   profiles: test
   redis:

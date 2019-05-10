@@ -26,7 +26,7 @@ management:
 spring:
   profiles: localhost
   datasource:
-    url: jdbc:mysql://localhost:17023/dev
+    url: jdbc:mysql://localhost:17023/dev?useSSL=false
     username: root
     password: dbpass
     initialize: true
@@ -39,6 +39,8 @@ spring:
   cloud:
     consul:
       host: consul
+  zipkin:
+    base-url: http://zipkin:9411/
   datasource:
     url: jdbc:mysql://mysql:3306/dev?useSSL=false
     username: root

@@ -17,6 +17,8 @@ server:
   port: 80
 spring:
   profiles: docker-compose
+  zipkin:
+    base-url: http://zipkin:9411/
   neo4j:
     host: neo4j
     port: 7474

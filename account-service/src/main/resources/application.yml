@@ -42,6 +42,8 @@ spring:
     username: root
     password: dbpass
     initialize: true
+  zipkin:
+    base-url: http://zipkin:9411/
 security:
   oauth2:
     resource:
