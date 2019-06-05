@@ -29,7 +29,7 @@ services:
     image: gliderlabs/registrator:latest
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
-    command: ["-internal", "-retry-attempts=-1", "consul://consul:8500"]
+    command: ["-ip=${HOST_IP}", "-retry-attempts=-1", "consul://consul:8500"]
 
   mongo:
     image: mongo:3.3
