@@ -33,7 +33,7 @@ spec:
               protocol: TCP
           env:
             - name: JAVA_OPTIONS
-              value: -Xms256m -Xmx512m -Djava.net.preferIPv4Stack=true -Djava.security.egd=file:///dev/./urandom
+              value: -Xms512m -Xmx1024m -Djava.net.preferIPv4Stack=true -Djava.security.egd=file:///dev/./urandom
             - name: SPRING_PROFILES_ACTIVE
               value: default,cloud
           livenessProbe:
